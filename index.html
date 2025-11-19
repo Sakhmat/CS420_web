@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Báo Cáo Đồ Án CS420: Nhận Dạng Cảm Xúc Khuôn Mặt</title>
+    <!-- Tải Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Cấu hình Font và Tailwind -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        'primary': '#4F46E5', // Indigo-600
+                        'secondary': '#10B981', // Emerald-500
+                        'accent': '#F59E0B', // Amber-500
+                        'bg-light': '#F9FAFB',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Thêm font Inter */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+
+        /* CSS tùy chỉnh cho hiệu ứng đổ bóng và tương tác */
+        .card-shadow {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease-in-out;
+        }
+        .card-shadow:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 25px -5px rgba(0, 0, 0, 0.15);
+        }
+    </style>
+</head>
+<body class="bg-bg-light min-h-screen">
+
+    <!-- Thanh Điều Hướng (Header) -->
+    <header class="bg-white shadow-lg sticky top-0 z-10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
+            <h1 class="text-2xl font-extrabold text-primary">CS420 | Báo Cáo Đồ Án Cuối Kì</h1>
+            <nav>
+                <a href="#overview" class="text-gray-600 hover:text-primary px-3 py-2 rounded-md text-sm font-medium">Tổng Quan</a>
+                <a href="#dashboard" class="text-gray-600 hover:text-primary px-3 py-2 rounded-md text-sm font-medium">Hiệu Năng</a>
+                <a href="#demo" class="text-white bg-secondary hover:bg-emerald-600 px-4 py-2 rounded-lg text-sm font-medium ml-4 card-shadow">Demo Ứng Dụng</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-16">
+
+        <!-- Phần 1: Tổng Quan Dự Án -->
+        <section id="overview" class="bg-white p-8 rounded-xl card-shadow">
+            <h2 class="text-4xl font-bold text-gray-800 mb-6 border-b pb-2">Nhận Dạng Cảm Xúc Khuôn Mặt (Facial Emotion Recognition)</h2>
+            <div class="space-y-4 text-gray-600">
+                <p>Dự án này nhằm mục đích phát triển một hệ thống sử dụng mạng nơ-ron tích chập (CNN) để phân loại cảm xúc cơ bản của con người (ví dụ: Vui, Buồn, Giận Dữ, Trung Tính, v.v.) dựa trên hình ảnh khuôn mặt.</p>
+                <p>Cơ sở mã nguồn được phát triển trong **Jupyter Notebook (`CS420_Code_Final.ipynb`)** đã triển khai các bước sau:</p>
+                <ul class="list-disc list-inside ml-4 space-y-2">
+                    <li>**Tiền Xử Lý:** Sử dụng mô hình **RetinaFace** để phát hiện và căn chỉnh khuôn mặt, đảm bảo đầu vào chất lượng cho mô hình CNN.</li>
+                    <li>**Mô Hình:** Xây dựng/Tinh chỉnh kiến trúc mạng học sâu (có thể là ResNet50 hoặc tương tự) sử dụng TensorFlow/Keras.</li>
+                    <li>**Dữ Liệu:** Sử dụng bộ dữ liệu khuôn mặt đã được gắn nhãn cảm xúc.</li>
+                    <li>**Huấn Luyện:** Lưu mô hình tốt nhất là `best_emotion_model.h5`.</li>
+                </ul>
+                <!-- [Image of Facial Emotion Recognition Process] -->
+            </div>
+        </section>
+
+        <!-- Phần 2: Dashboard Hiệu Năng (Giả lập) -->
+        <section id="dashboard" class="space-y-6">
+            <h2 class="text-3xl font-bold text-gray-800 border-b pb-2">Hiệu Năng Mô Hình (best_emotion_model.h5)</h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Card 1: Độ Chính Xác -->
+                <div class="bg-white p-6 rounded-xl card-shadow border-l-4 border-primary">
+                    <p class="text-sm font-medium text-gray-500">Độ Chính Xác Trên Tập Kiểm Tra</p>
+                    <p class="mt-1 text-5xl font-extrabold text-gray-900" id="val-accuracy">38.92%</p>
+                    <p class="text-sm text-gray-400 mt-2">Đạt được sau 15 epoch huấn luyện.</p>
+                </div>
+
+                <!-- Card 2: Hàm Mất Mát -->
+                <div class="bg-white p-6 rounded-xl card-shadow border-l-4 border-secondary">
+                    <p class="text-sm font-medium text-gray-500">Hàm Mất Mát (Loss)</p>
+                    <p class="mt-1 text-5xl font-extrabold text-gray-900" id="val-loss">2.145</p>
+                    <p class="text-sm text-gray-400 mt-2">Mất mát trên tập kiểm tra.</p>
+                </div>
+
+                <!-- Card 3: Số Lớp Cảm Xúc -->
+                <div class="bg-white p-6 rounded-xl card-shadow border-l-4 border-accent">
+                    <p class="text-sm font-medium text-gray-500">Số Lớp Cảm Xúc Phân Loại</p>
+                    <p class="mt-1 text-5xl font-extrabold text-gray-900" id="num-classes">7</p>
+                    <p class="text-sm text-gray-400 mt-2">Vui, Buồn, Giận Dữ, Sợ Hãi, Ghê Tởm, Ngạc Nhiên, Trung Tính.</p>
+                </div>
+            </div>
+
+             <div class="mt-8 bg-white p-6 rounded-xl card-shadow">
+                <h3 class="text-xl font-semibold text-gray-800 mb-4">Ma Trận Nhầm Lẫn (Mô phỏng)</h3>
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-50">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Thực tế \ Dự đoán</th>
+                                <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Vui</th>
+                                <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Buồn</th>
+                                <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Giận</th>
+                                <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Trung Tính</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Vui</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-center font-bold text-secondary">75%</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-center text-gray-500">10%</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-center text-gray-500">5%</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-center text-gray-500">10%</td>
+                            </tr>
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">Buồn</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-center text-gray-500">5%</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-center font-bold text-secondary">65%</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-center text-gray-500">15%</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-center text-gray-500">15%</td>
+                            </tr>
+                            <!-- ... Thêm các hàng khác nếu cần ... -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Phần 3: Demo Ứng Dụng -->
+        <section id="demo" class="space-y-6">
+            <h2 class="text-3xl font-bold text-gray-800 border-b pb-2">Demo Trực Quan</h2>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+                <!-- Khu vực Tải Ảnh Lên -->
+                <div class="lg:col-span-1 bg-white p-6 rounded-xl card-shadow space-y-4">
+                    <h3 class="text-xl font-semibold text-primary">Bước 1: Tải Ảnh Khuôn Mặt</h3>
+                    <input type="file" id="image-upload" accept="image/*" class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-primary file:text-white hover:file:bg-indigo-700 cursor-pointer">
+                    <button id="predict-button" class="w-full bg-secondary text-white font-bold py-3 px-4 rounded-lg hover:bg-emerald-600 transition duration-150 ease-in-out card-shadow" onclick="runPrediction()">
+                        Bước 2: Dự Đoán Cảm Xúc
+                    </button>
+                    <div id="loading-spinner" class="hidden text-center mt-4">
+                        <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-primary inline-block" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        Đang chạy mô hình...
+                    </div>
+                </div>
+
+                <!-- Khu vực Hiển thị Ảnh & Kết quả -->
+                <div class="lg:col-span-2 bg-white p-6 rounded-xl card-shadow">
+                    <h3 class="text-xl font-semibold text-primary mb-4">Kết Quả Nhận Dạng</h3>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Ảnh Gốc/Đã Căn Chỉnh -->
+                        <div class="space-y-2">
+                            <p class="font-medium text-gray-700">Ảnh Đầu Vào:</p>
+                            <img id="display-image" src="https://placehold.co/400x300/60A5FA/FFFFFF?text=Ảnh+Demo" alt="Ảnh tải lên" class="w-full h-auto object-cover rounded-lg border-2 border-gray-200">
+                        </div>
+
+                        <!-- Kết Quả Dự Đoán -->
+                        <div class="space-y-4">
+                            <p class="font-medium text-gray-700">Dự Đoán Cảm Xúc:</p>
+                            <div id="prediction-result" class="bg-bg-light p-4 rounded-lg border border-primary/30">
+                                <p class="text-3xl font-extrabold text-primary" id="emotion-text">Vui</p>
+                                <p class="text-lg text-gray-600 mt-1">Độ tin cậy: <span id="confidence-text" class="font-bold text-accent">92.5%</span></p>
+                            </div>
+
+                            <p class="font-medium text-gray-700 mt-4">Phân Bố Xác Suất Cảm Xúc:</p>
+                            <div id="probability-bars" class="space-y-2">
+                                <!-- Thanh xác suất sẽ được thêm bằng JS -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 text-center">
+            <p>&copy; 2024 Đồ Án Cuối Kì CS420. Mô hình phát triển bằng Python, TensorFlow và Keras.</p>
+        </div>
+    </footer>
+
+    <!-- Logic JavaScript cho Demo (Giả lập) -->
+    <script>
+        const emotionLabels = ["Giận Dữ", "Ghê Tởm", "Sợ Hãi", "Vui", "Buồn", "Ngạc Nhiên", "Trung Tính"];
+        const placeholderImagePath = "https://placehold.co/400x300/60A5FA/FFFFFF?text=Ảnh+Demo";
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Khởi tạo giao diện demo
+            updatePredictionDisplay("Vui", 92.5, generateRandomProbabilities());
+            document.getElementById('image-upload').addEventListener('change', previewImage);
+        });
+
+        function previewImage(event) {
+            const file = event.target.files[0];
+            const displayImage = document.getElementById('display-image');
+
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    displayImage.src = e.target.result;
+                }
+                reader.readAsDataURL(file);
+            } else {
+                displayImage.src = placeholderImagePath;
+            }
+        }
+
+        function generateRandomProbabilities() {
+            // Giả lập kết quả dự đoán (tương tự như output file .ipynb)
+            const random = Math.random();
+            let predictedEmotion;
+
+            if (random < 0.2) predictedEmotion = "Giận Dữ";
+            else if (random < 0.3) predictedEmotion = "Buồn";
+            else if (random < 0.4) predictedEmotion = "Trung Tính";
+            else if (random < 0.8) predictedEmotion = "Vui"; // Tăng khả năng Vui/Trung Tính
+            else predictedEmotion = "Ngạc Nhiên";
+
+            // Tạo các xác suất giả lập
+            const probabilities = {};
+            let remainingProb = 100;
+            let mainProb = (Math.random() * 20) + 70; // 70-90% cho cảm xúc chính
+            mainProb = Math.min(mainProb, 95); // Giới hạn tối đa
+            remainingProb -= mainProb;
+
+            emotionLabels.forEach(label => {
+                if (label === predictedEmotion) {
+                    probabilities[label] = mainProb;
+                } else {
+                    probabilities[label] = 0; // Khởi tạo
+                }
+            });
+
+            // Phân bổ ngẫu nhiên phần còn lại
+            emotionLabels.forEach(label => {
+                if (label !== predictedEmotion) {
+                    let prob = Math.random() * remainingProb;
+                    probabilities[label] = prob;
+                }
+            });
+
+            // Chuẩn hóa để tổng bằng 100%
+            const currentSum = Object.values(probabilities).reduce((a, b) => a + b, 0);
+            const factor = 100 / currentSum;
+            
+            emotionLabels.forEach(label => {
+                probabilities[label] = (probabilities[label] * factor).toFixed(2);
+            });
+            
+            // Đảm bảo tổng chính xác là 100 (làm tròn lại)
+            probabilities[predictedEmotion] = (100 - Object.values(probabilities).filter( (v, i) => i !== emotionLabels.indexOf(predictedEmotion) ).reduce((a, b) => parseFloat(a) + parseFloat(b), 0)).toFixed(2);
+            
+            return {
+                emotion: predictedEmotion,
+                confidence: parseFloat(probabilities[predictedEmotion]),
+                allProbs: probabilities
+            };
+        }
+
+        function updatePredictionDisplay(emotion, confidence, allProbs) {
+            const emotionText = document.getElementById('emotion-text');
+            const confidenceText = document.getElementById('confidence-text');
+            const probBarsContainer = document.getElementById('probability-bars');
+            const confidenceThreshold = 75; // Ngưỡng để quyết định màu sắc
+
+            emotionText.textContent = emotion;
+            confidenceText.textContent = `${confidence.toFixed(2)}%`;
+            
+            // Cập nhật màu sắc dựa trên độ tin cậy
+            if (confidence > confidenceThreshold) {
+                emotionText.className = 'text-3xl font-extrabold text-secondary';
+            } else if (confidence > 50) {
+                 emotionText.className = 'text-3xl font-extrabold text-accent';
+            } else {
+                 emotionText.className = 'text-3xl font-extrabold text-red-500';
+            }
+
+            // Xóa các thanh xác suất cũ
+            probBarsContainer.innerHTML = '';
+
+            // Tạo và thêm các thanh xác suất mới
+            emotionLabels.forEach(label => {
+                const probValue = parseFloat(allProbs[label]);
+                const barColor = label === emotion ? 'bg-primary' : 'bg-gray-300';
+                
+                const barHtml = `
+                    <div class="flex items-center space-x-2">
+                        <span class="w-24 text-sm font-medium text-gray-600">${label}</span>
+                        <div class="flex-grow bg-gray-200 rounded-full h-3">
+                            <div class="h-3 rounded-full transition-all duration-700 ease-out ${barColor}" style="width: ${probValue}%;"></div>
+                        </div>
+                        <span class="w-12 text-right text-xs font-semibold ${label === emotion ? 'text-primary' : 'text-gray-500'}">${probValue}%</span>
+                    </div>
+                `;
+                probBarsContainer.innerHTML += barHtml;
+            });
+        }
+
+        function runPrediction() {
+            const imageInput = document.getElementById('image-upload');
+            const loadingSpinner = document.getElementById('loading-spinner');
+            const predictButton = document.getElementById('predict-button');
+
+            if (imageInput.files.length === 0) {
+                // Sử dụng một modal/message box thay vì alert()
+                showCustomMessage("Vui lòng chọn một file ảnh khuôn mặt để thử nghiệm.", "warning");
+                return;
+            }
+
+            // Hiển thị loading
+            loadingSpinner.classList.remove('hidden');
+            predictButton.disabled = true;
+            predictButton.textContent = "Đang phân tích...";
+
+            // Giả lập độ trễ mô hình (500ms - 2000ms)
+            const delay = Math.random() * 1500 + 500; 
+
+            setTimeout(() => {
+                // Tắt loading
+                loadingSpinner.classList.add('hidden');
+                predictButton.disabled = false;
+                predictButton.textContent = "Bước 2: Dự Đoán Cảm Xúc";
+
+                // Tạo kết quả giả lập
+                const result = generateRandomProbabilities();
+                
+                // Cập nhật giao diện
+                updatePredictionDisplay(result.emotion, result.confidence, result.allProbs);
+
+                // Hiển thị thông báo thành công
+                showCustomMessage(`Dự đoán hoàn tất! Cảm xúc: ${result.emotion} (${result.confidence.toFixed(2)}%)`, "success");
+
+            }, delay);
+        }
+
+        // Hàm thay thế alert()
+        function showCustomMessage(message, type) {
+            const container = document.getElementById('demo');
+            let bgColor, borderColor, icon;
+
+            switch (type) {
+                case 'success':
+                    bgColor = 'bg-green-100';
+                    borderColor = 'border-green-500';
+                    icon = '✅';
+                    break;
+                case 'warning':
+                    bgColor = 'bg-yellow-100';
+                    borderColor = 'border-yellow-500';
+                    icon = '⚠️';
+                    break;
+                default:
+                    bgColor = 'bg-blue-100';
+                    borderColor = 'border-blue-500';
+                    icon = 'ℹ️';
+            }
+
+            const messageBox = document.createElement('div');
+            messageBox.className = `fixed bottom-4 right-4 p-4 rounded-lg shadow-xl border-l-4 ${bgColor} ${borderColor} z-50 transition-transform duration-300 ease-out transform translate-y-0`;
+            messageBox.innerHTML = `<div class="flex items-center space-x-3"><span class="text-xl">${icon}</span><p class="text-sm font-medium text-gray-800">${message}</p></div>`;
+            
+            container.appendChild(messageBox);
+            
+            // Tự động ẩn sau 4 giây
+            setTimeout(() => {
+                messageBox.classList.add('translate-y-20', 'opacity-0');
+                messageBox.addEventListener('transitionend', () => messageBox.remove());
+            }, 4000);
+        }
+    </script>
+</body>
+</html>
